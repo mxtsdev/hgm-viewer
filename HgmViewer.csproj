@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net7.0-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Company>Microsoft</Company>
+    <Authors>Hybrid Application Team</Authors>
+    <Copyright>Copyright ©2020</Copyright>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Configurations>Debug;Release;Win7 Release;Win7 Debug</Configurations>
+    <RootNamespace>HgmViewer</RootNamespace>
+    <AssemblyName>HgmViewer</AssemblyName>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <ApplicationIcon>application.ico</ApplicationIcon>
+    <PackageIcon></PackageIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="index.htm" />
+    <None Remove="Web\build\three.module.js" />
+    <None Remove="Web\jsm\controls\OrbitControls.js" />
+    <None Remove="Web\jsm\controls\PointerLockControls.js" />
+    <None Remove="Web\jsm\libs\lil-gui.module.min.js" />
+    <None Remove="Web\jsm\loaders\GLTFLoader.js" />
+    <None Remove="Web\jsm\utils\BufferGeometryUtils.js" />
+    <None Remove="Web\main.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="application.ico" />
+    <Content Include="Web\index.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\build\three.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\jsm\controls\OrbitControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\jsm\controls\PointerLockControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\jsm\libs\lil-gui.module.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\jsm\loaders\GLTFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\jsm\utils\BufferGeometryUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\main.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.1.0" />
+    <PackageReference Include="Fody" Version="6.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="KaitaiStruct.Runtime.CSharp" Version="0.10.0" />
+    <PackageReference Include="Krypton.Docking" Version="70.22.11.312" />
+    <PackageReference Include="Krypton.Toolkit" Version="70.22.11.312" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.149" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1901.177" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ObjectListView.Repack.NET6Plus" Version="2.9.4" />
+    <PackageReference Include="Pfim" Version="0.11.2" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="1.1.0" />
+    <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0030" />
+    <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.0-alpha0030" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
