@@ -22,6 +22,10 @@ namespace HgmViewer.Formats
         private void _read()
         {
             _header = new HeaderStruct(m_io, this, m_root);
+            if (Header.Version == 3)
+            {
+                _unk1 = m_io.ReadBytes(16);
+            }
             _mtlName = new RecStruct(m_io, this, m_root);
             switch (Header.Version)
             {
@@ -33,6 +37,11 @@ namespace HgmViewer.Formats
                 case 1:
                     {
                         _mtl = new Version1Struct(m_io, this, m_root);
+                        break;
+                    }
+                case 3:
+                    {
+                        _mtl = new Version3Struct(m_io, this, m_root);
                         break;
                     }
             }
@@ -63,6 +72,54 @@ namespace HgmViewer.Formats
             public string Str { get { return _str; } }
             public Sltm M_Root { get { return m_root; } }
             public KaitaiStruct M_Parent { get { return m_parent; } }
+        }
+        public partial class Version3Struct : KaitaiStruct
+        {
+            public static Version3Struct FromFile(string fileName)
+            {
+                return new Version3Struct(new KaitaiStream(fileName));
+            }
+
+            public Version3Struct(KaitaiStream p__io, Sltm p__parent = null, Sltm p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _unk1 = m_io.ReadBytes(1);
+                _textures = new TexturesStruct(m_io, this, m_root);
+                __raw_data = m_io.ReadBytes(197);
+                var io___raw_data = new KaitaiStream(__raw_data);
+                _data = new MaterialDataStruct3(io___raw_data, this, m_root);
+                if (!(M_Io.IsEof))
+                {
+                    _submtl = new List<RecStruct>();
+                    {
+                        var i = 0;
+                        while (!m_io.IsEof)
+                        {
+                            _submtl.Add(new RecStruct(m_io, this, m_root));
+                            i++;
+                        }
+                    }
+                }
+            }
+            private byte[] _unk1;
+            private TexturesStruct _textures;
+            private MaterialDataStruct3 _data;
+            private List<RecStruct> _submtl;
+            private Sltm m_root;
+            private Sltm m_parent;
+            private byte[] __raw_data;
+            public byte[] Unk1 { get { return _unk1; } }
+            public TexturesStruct Textures { get { return _textures; } }
+            public MaterialDataStruct3 Data { get { return _data; } }
+            public List<RecStruct> Submtl { get { return _submtl; } }
+            public Sltm M_Root { get { return m_root; } }
+            public Sltm M_Parent { get { return m_parent; } }
+            public byte[] M_RawData { get { return __raw_data; } }
         }
         public partial class Version0Struct : KaitaiStruct
         {
@@ -221,7 +278,7 @@ namespace HgmViewer.Formats
                 return new TexturesStruct(new KaitaiStream(fileName));
             }
 
-            public TexturesStruct(KaitaiStream p__io, Sltm.Version1Struct p__parent = null, Sltm p__root = null) : base(p__io)
+            public TexturesStruct(KaitaiStream p__io, KaitaiStruct p__parent = null, Sltm p__root = null) : base(p__io)
             {
                 m_parent = p__parent;
                 m_root = p__root;
@@ -245,7 +302,7 @@ namespace HgmViewer.Formats
             private RecStruct _colorizationMap;
             private RecStruct _specialMap;
             private Sltm m_root;
-            private Sltm.Version1Struct m_parent;
+            private KaitaiStruct m_parent;
             public RecStruct BaseMap { get { return _baseMap; } }
             public RecStruct RmMap { get { return _rmMap; } }
             public RecStruct NormalMap { get { return _normalMap; } }
@@ -254,7 +311,37 @@ namespace HgmViewer.Formats
             public RecStruct ColorizationMap { get { return _colorizationMap; } }
             public RecStruct SpecialMap { get { return _specialMap; } }
             public Sltm M_Root { get { return m_root; } }
-            public Sltm.Version1Struct M_Parent { get { return m_parent; } }
+            public KaitaiStruct M_Parent { get { return m_parent; } }
+        }
+        public partial class XLenStr : KaitaiStruct
+        {
+            public static XLenStr FromFile(string fileName)
+            {
+                return new XLenStr(new KaitaiStream(fileName));
+            }
+
+            public XLenStr(KaitaiStream p__io, Sltm.MaterialDataStruct3 p__parent = null, Sltm p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _unk0 = m_io.ReadU4le();
+                _len = m_io.ReadU4le();
+                _str = System.Text.Encoding.GetEncoding("ascii").GetString(m_io.ReadBytes(Len));
+            }
+            private uint _unk0;
+            private uint _len;
+            private string _str;
+            private Sltm m_root;
+            private Sltm.MaterialDataStruct3 m_parent;
+            public uint Unk0 { get { return _unk0; } }
+            public uint Len { get { return _len; } }
+            public string Str { get { return _str; } }
+            public Sltm M_Root { get { return m_root; } }
+            public Sltm.MaterialDataStruct3 M_Parent { get { return m_parent; } }
         }
         public partial class Textures0Struct : KaitaiStruct
         {
@@ -297,6 +384,67 @@ namespace HgmViewer.Formats
             public Rec0Struct SpecialMap { get { return _specialMap; } }
             public Sltm M_Root { get { return m_root; } }
             public Sltm.Version0Struct M_Parent { get { return m_parent; } }
+        }
+        public partial class MaterialDataStruct3 : KaitaiStruct
+        {
+            public static MaterialDataStruct3 FromFile(string fileName)
+            {
+                return new MaterialDataStruct3(new KaitaiStream(fileName));
+            }
+
+            public MaterialDataStruct3(KaitaiStream p__io, Sltm.Version3Struct p__parent = null, Sltm p__root = null) : base(p__io)
+            {
+                m_parent = p__parent;
+                m_root = p__root;
+                _read();
+            }
+            private void _read()
+            {
+                _unkX0 = m_io.ReadBytes(3);
+                _colors = m_io.ReadU1();
+                _opacity = m_io.ReadU1();
+                _unkX1 = m_io.ReadBytes(7);
+                _strs = new List<XLenStr>();
+                for (var i = 0; i < 10; i++)
+                {
+                    _strs.Add(new XLenStr(m_io, this, m_root));
+                }
+                _unk2 = m_io.ReadBytes(16);
+                _uSize = m_io.ReadF4le();
+                _vSize = m_io.ReadF4le();
+                _unk3 = m_io.ReadBytes(8);
+                _stretchFactor1 = m_io.ReadF4le();
+                _stretchFactor2 = m_io.ReadF4le();
+                _unk4 = m_io.ReadBytes(16);
+            }
+            private byte[] _unkX0;
+            private byte _colors;
+            private byte _opacity;
+            private byte[] _unkX1;
+            private List<XLenStr> _strs;
+            private byte[] _unk2;
+            private float _uSize;
+            private float _vSize;
+            private byte[] _unk3;
+            private float _stretchFactor1;
+            private float _stretchFactor2;
+            private byte[] _unk4;
+            private Sltm m_root;
+            private Sltm.Version3Struct m_parent;
+            public byte[] UnkX0 { get { return _unkX0; } }
+            public byte Colors { get { return _colors; } }
+            public byte Opacity { get { return _opacity; } }
+            public byte[] UnkX1 { get { return _unkX1; } }
+            public List<XLenStr> Strs { get { return _strs; } }
+            public byte[] Unk2 { get { return _unk2; } }
+            public float USize { get { return _uSize; } }
+            public float VSize { get { return _vSize; } }
+            public byte[] Unk3 { get { return _unk3; } }
+            public float StretchFactor1 { get { return _stretchFactor1; } }
+            public float StretchFactor2 { get { return _stretchFactor2; } }
+            public byte[] Unk4 { get { return _unk4; } }
+            public Sltm M_Root { get { return m_root; } }
+            public Sltm.Version3Struct M_Parent { get { return m_parent; } }
         }
         public partial class Rec0Struct : KaitaiStruct
         {
@@ -398,11 +546,13 @@ namespace HgmViewer.Formats
             public KaitaiStruct M_Parent { get { return m_parent; } }
         }
         private HeaderStruct _header;
+        private byte[] _unk1;
         private RecStruct _mtlName;
         private KaitaiStruct _mtl;
         private Sltm m_root;
         private KaitaiStruct m_parent;
         public HeaderStruct Header { get { return _header; } }
+        public byte[] Unk1 { get { return _unk1; } }
         public RecStruct MtlName { get { return _mtlName; } }
         public KaitaiStruct Mtl { get { return _mtl; } }
         public Sltm M_Root { get { return m_root; } }

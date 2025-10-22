@@ -126,6 +126,8 @@ namespace HgmViewer.Service
                             submtls = mtl0.Submtl?.Where(x => x.Data.Len != 0).Select(x => x.Data.Str).ToArray();
                         else if (mtl.Mtlbin?.Mtl is Version1Struct mtl1)
                             submtls = mtl1.Submtl?.Where(x => x.RecType == 2).Select(x => x.Data.Str).ToArray();
+                        else if (mtl.Mtlbin?.Mtl is Version3Struct mtl3)
+                            submtls = mtl3.Submtl?.Where(x => x.RecType == 2).Select(x => x.Data.Str).ToArray();
 
                         if (submtls != null)
                         {
@@ -351,7 +353,17 @@ namespace HgmViewer.Service
                     if (m1.Textures.ColorizationMap.RecType == 2) textures.Add(SltmTextureType.ColorizationMap, m1.Textures.ColorizationMap.Data.Str);
                     if (m1.Textures.SpecialMap.RecType == 2) textures.Add(SltmTextureType.SpecialMap, m1.Textures.SpecialMap.Data.Str);
                 }
-                
+                else if (def.Mtlbin.Mtl is Version3Struct m3)
+                {
+                    if (m3.Textures.BaseMap.RecType == 2) textures.Add(SltmTextureType.BaseMap, m3.Textures.BaseMap.Data.Str);
+                    if (m3.Textures.RmMap.RecType == 2) textures.Add(SltmTextureType.RMMap, m3.Textures.RmMap.Data.Str);
+                    if (m3.Textures.NormalMap.RecType == 2) textures.Add(SltmTextureType.NormalMap, m3.Textures.NormalMap.Data.Str);
+                    if (m3.Textures.AoMap.RecType == 2) textures.Add(SltmTextureType.AOMap, m3.Textures.AoMap.Data.Str);
+                    if (m3.Textures.SiMap.RecType == 2) textures.Add(SltmTextureType.SIMap, m3.Textures.SiMap.Data.Str);
+                    if (m3.Textures.ColorizationMap.RecType == 2) textures.Add(SltmTextureType.ColorizationMap, m3.Textures.ColorizationMap.Data.Str);
+                    if (m3.Textures.SpecialMap.RecType == 2) textures.Add(SltmTextureType.SpecialMap, m3.Textures.SpecialMap.Data.Str);
+                }
+
                 foreach (var (typ, textureRelFilePath) in textures)
                 {
                     var match = FindByFilePath(textureRelFilePath);
