@@ -47,8 +47,8 @@ namespace HgmViewer.Formats
             for (var i = 0; i < NumMeshes; i++)
             {
                 Mesh _t_meshes = new Mesh(m_io, this, m_root);
-                _meshes.Add(_t_meshes);
                 _t_meshes._read();
+                _meshes.Add(_t_meshes);
             }
             _armatureElementType = m_io.ReadU1();
             if (ArmatureElementType == 1) {
@@ -251,8 +251,8 @@ namespace HgmViewer.Formats
                 for (var i = 0; i < NumElements; i++)
                 {
                     Record _t_elements = new Record(m_io, this, m_root);
-                    _elements.Add(_t_elements);
                     _t_elements._read();
+                    _elements.Add(_t_elements);
                 }
             }
             private uint _numElements;
@@ -307,8 +307,7 @@ namespace HgmViewer.Formats
             }
             public void _read()
             {
-                _materialIndex = m_io.ReadU4le();
-                __unnamed1 = m_io.ReadBytes(8);
+                __unnamed0 = m_io.ReadBytes(12);
                 _numVertices = m_io.ReadU4le();
                 _numFaces = m_io.ReadU4le();
                 _haveVertexType = ((Hgm.VertexTypeMarker) m_io.ReadU1());
@@ -318,9 +317,9 @@ namespace HgmViewer.Formats
                 }
                 _fieldsArr = new RecordArray(m_io, this, m_root);
                 _fieldsArr._read();
-                __unnamed7 = m_io.ReadBytes(4);
+                __unnamed6 = m_io.ReadBytes(4);
                 _sizeVertex = m_io.ReadU4le();
-                __unnamed9 = m_io.ReadBytes(1);
+                __unnamed8 = m_io.ReadBytes(1);
                 __raw_vertices = new List<byte[]>();
                 _vertices = new List<Vertex>();
                 for (var i = 0; i < NumVertices; i++)
@@ -328,8 +327,8 @@ namespace HgmViewer.Formats
                     __raw_vertices.Add(m_io.ReadBytes(SizeVertex));
                     var io___raw_vertices = new KaitaiStream(__raw_vertices[__raw_vertices.Count - 1]);
                     Vertex _t_vertices = new Vertex(io___raw_vertices, this, m_root);
-                    _vertices.Add(_t_vertices);
                     _t_vertices._read();
+                    _vertices.Add(_t_vertices);
                 }
                 _faces = new FacesStruct(m_io, this, m_root);
                 _faces._read();
@@ -390,56 +389,56 @@ namespace HgmViewer.Formats
                         switch (M_Parent.Fields[i].ElementValueStr) {
                         case "fmt_sint16_c3": {
                             VertexFieldSint16 _t_fields = new VertexFieldSint16(3, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldSint16) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_unorm8_c3": {
                             VertexFieldUnorm8 _t_fields = new VertexFieldUnorm8(3, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUnorm8) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_unorm8_c4": {
                             VertexFieldUnorm8 _t_fields = new VertexFieldUnorm8(4, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUnorm8) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_unorm8_c2": {
                             VertexFieldUnorm8 _t_fields = new VertexFieldUnorm8(2, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUnorm8) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_uint8_c4": {
                             VertexFieldUint8 _t_fields = new VertexFieldUint8(4, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUint8) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_sint16_c2": {
                             VertexFieldSint16 _t_fields = new VertexFieldSint16(2, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldSint16) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_sint16_c1": {
                             VertexFieldSint16 _t_fields = new VertexFieldSint16(1, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldSint16) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         case "fmt_unorm8_c1": {
                             VertexFieldUnorm8 _t_fields = new VertexFieldUnorm8(1, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUnorm8) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         default: {
                             VertexFieldUnknown _t_fields = new VertexFieldUnknown(i, m_io, this, m_root);
-                            _fields.Add(_t_fields);
                             ((VertexFieldUnknown) (_t_fields))._read();
+                            _fields.Add(_t_fields);
                             break;
                         }
                         }
@@ -629,8 +628,8 @@ namespace HgmViewer.Formats
                     for (var i = 0; i < (M_Parent.NumFaces / 3); i++)
                     {
                         FaceStruct _t_face = new FaceStruct(m_io, this, m_root);
-                        _face.Add(_t_face);
                         _t_face._read();
+                        _face.Add(_t_face);
                     }
                 }
                 private RecordType _unk1TypeMarker;
@@ -668,16 +667,15 @@ namespace HgmViewer.Formats
                     return _numFields;
                 }
             }
-            private uint _materialIndex;
-            private byte[] __unnamed1;
+            private byte[] __unnamed0;
             private uint _numVertices;
             private uint _numFaces;
             private VertexTypeMarker _haveVertexType;
             private LenStr _vertexType;
             private RecordArray _fieldsArr;
-            private byte[] __unnamed7;
+            private byte[] __unnamed6;
             private uint _sizeVertex;
-            private byte[] __unnamed9;
+            private byte[] __unnamed8;
             private List<Vertex> _vertices;
             private FacesStruct _faces;
             private Bbox _bbox;
@@ -685,16 +683,15 @@ namespace HgmViewer.Formats
             private Hgm m_root;
             private Hgm m_parent;
             private List<byte[]> __raw_vertices;
-            public uint MaterialIndex { get { return _materialIndex; } }
-            public byte[] Unnamed_1 { get { return __unnamed1; } }
+            public byte[] Unnamed_0 { get { return __unnamed0; } }
             public uint NumVertices { get { return _numVertices; } }
             public uint NumFaces { get { return _numFaces; } }
             public VertexTypeMarker HaveVertexType { get { return _haveVertexType; } }
             public LenStr VertexType { get { return _vertexType; } }
             public RecordArray FieldsArr { get { return _fieldsArr; } }
-            public byte[] Unnamed_7 { get { return __unnamed7; } }
+            public byte[] Unnamed_6 { get { return __unnamed6; } }
             public uint SizeVertex { get { return _sizeVertex; } }
-            public byte[] Unnamed_9 { get { return __unnamed9; } }
+            public byte[] Unnamed_8 { get { return __unnamed8; } }
             public List<Vertex> Vertices { get { return _vertices; } }
             public FacesStruct Faces { get { return _faces; } }
 
@@ -812,8 +809,8 @@ namespace HgmViewer.Formats
                 for (var i = 0; i < NumBones; i++)
                 {
                     Bip _t_bones = new Bip(m_io, this, m_root);
-                    _bones.Add(_t_bones);
                     _t_bones._read();
+                    _bones.Add(_t_bones);
                 }
                 __raw_joints = new List<byte[]>();
                 _joints = new List<Temp1>();
@@ -822,8 +819,8 @@ namespace HgmViewer.Formats
                     __raw_joints.Add(m_io.ReadBytes(64));
                     var io___raw_joints = new KaitaiStream(__raw_joints[__raw_joints.Count - 1]);
                     Temp1 _t_joints = new Temp1(io___raw_joints, this, m_root);
-                    _joints.Add(_t_joints);
                     _t_joints._read();
+                    _joints.Add(_t_joints);
                 }
             }
             private LenStr _name;
